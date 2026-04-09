@@ -495,34 +495,90 @@ import streamlit.components.v1 as components
 components.html(
     """
     <script>
-        // Access parent document (Streamlit app)
         const doc = window.parent.document;
 
-        // Clear any stored sidebar state
-        try {
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.includes('sidebar')) {
-                    localStorage.removeItem(key);
-                }
-            }
-        } catch(e) {}
+        // Remove any old custom button
+        const old = doc.getElementById('custom-sidebar-toggle');
+        if (old) old.remove();
 
-        // Find and click the sidebar toggle if collapsed
-        function openSidebar() {
-            const btn = doc.querySelector('[data-testid="collapsedControl"]');
-            if (btn) {
-                btn.click();
-                return;
-            }
+        // Create a floating toggle button in the parent page
+        const btn = doc.createElement('div');
+        btn.id = 'custom-sidebar-toggle';
+        btn.innerHTML = '☰';
+        btn.style.cssText = `
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 99999999;
+            width: 36px;
+            height: 36px;
+            background: #1A1D2E;
+            border: 1.5px solid #00E5CC;
+            border-radius: 10px;
+            color: #00E5CC;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 12px rgba(0,229,204,0.15);
+        `;
+
+        // Hover effect
+        btn.addEventListener('mouseenter', () => {
+            btn.style.background = '#00E5CC';
+            btn.style.color = '#0D0F1A';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.background = '#1A1D2E';
+            btn.style.color = '#00E5CC';
+        });
+
+        // Click: try to open sidebar
+        btn.addEventListener('click', () => {
+            // Method 1: Click Streamlit's own collapsed control
+            const ctrl = doc.querySelector('[data-testid="collapsedControl"]');
+            if (ctrl) { ctrl.click(); return; }
+
+            // Method 2: Find the close button inside sidebar and click
             const sidebar = doc.querySelector('[data-testid="stSidebar"]');
-            if (sidebar && sidebar.getAttribute('aria-expanded') === 'false') {
-                const toggle = sidebar.querySelector('button');
-                if (toggle) toggle.click();
+            if (sidebar) {
+                const closeBtn = sidebar.querySelector('button');
+                if (closeBtn) { closeBtn.click(); return; }
+            }
+
+            // Method 3: Try setting aria-expanded directly
+            if (sidebar) {
+                sidebar.setAttribute('aria-expanded', 'true');
+                sidebar.style.transform = 'none';
+                sidebar.style.marginLeft = '0px';
+            }
+        });
+
+        doc.body.appendChild(btn);
+
+        // Watch sidebar state to show/hide button
+        function checkSidebar() {
+            const sidebar = doc.querySelector('[data-testid="stSidebar"]');
+            if (sidebar && sidebar.getAttribute('aria-expanded') === 'true') {
+                btn.style.display = 'none';
+            } else {
+                btn.style.display = 'flex';
             }
         }
-        setTimeout(openSidebar, 300);
-        setTimeout(openSidebar, 800);
+
+        // Check periodically
+        setInterval(checkSidebar, 300);
+
+        // Also open sidebar on first load
+        setTimeout(() => {
+            const sidebar = doc.querySelector('[data-testid="stSidebar"]');
+            if (sidebar && sidebar.getAttribute('aria-expanded') === 'false') {
+                btn.click();
+            }
+        }, 500);
     </script>
     """,
     height=0,
