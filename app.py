@@ -559,13 +559,16 @@ with st.sidebar:
         try:
             import google.generativeai as genai
 
-            genai.configure(api_key=api_key)
-            st.session_state.model = genai.GenerativeModel(
-                "gemini-1.5-flash",
-                system_instruction=get_system_prompt(st.session_state.sport),
-            )
-            if "chat_session" not in st.session_state:
+            # Only reconfigure if key changed
+            if st.session_state.get("_last_api_key") != api_key:
+                genai.configure(api_key=api_key)
+                st.session_state._last_api_key = api_key
+                st.session_state.model = genai.GenerativeModel(
+                    "gemini-1.5-flash",
+                    system_instruction=get_system_prompt(st.session_state.sport),
+                )
                 st.session_state.chat_session = st.session_state.model.start_chat(history=[])
+
             st.session_state.api_key_set = True
             st.markdown(
                 '<div class="info-box"><span class="status-dot"></span> API connessa con successo</div>',
@@ -613,6 +616,7 @@ with st.sidebar:
                     system_instruction=get_system_prompt(sport),
                 )
                 st.session_state.chat_session = st.session_state.model.start_chat(history=[])
+                st.session_state._last_api_key = api_key
             except Exception:
                 pass
 
