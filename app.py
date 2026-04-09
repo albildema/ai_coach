@@ -236,11 +236,26 @@ DARK_CSS = """
         opacity: 0.85 !important;
     }
 
-    /* ── Nuclear: force ALL remaining elements dark ── */
-    iframe, .stException, .stAlert,
-    .element-container, .stMarkdown,
-    div[data-testid] {
+    /* ── Force dark on content elements (but NOT sidebar controls) ── */
+    .element-container, .stMarkdown {
         background-color: transparent !important;
+    }
+
+    /* Sidebar toggle: high-specificity override to stay visible */
+    [data-testid="collapsedControl"] {
+        background: var(--bg-secondary) !important;
+        background-color: var(--bg-secondary) !important;
+        border: 1px solid var(--accent) !important;
+        border-radius: 8px !important;
+        z-index: 999999 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+    }
+
+    [data-testid="collapsedControl"] svg {
+        color: var(--accent) !important;
+        fill: var(--accent) !important;
     }
 
     /* Explicit override for white bottom gap */
