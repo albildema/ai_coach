@@ -890,27 +890,30 @@ if prompt := st.chat_input(
                     "⚠️ **Limite API raggiunto**\n\n"
                     "Hai superato la quota di richieste per la tua API Key. "
                     "Attendi qualche minuto o verifica il tuo piano su "
-                    "[Google AI Studio](https://aistudio.google.com/)."
+                    "[Google AI Studio](https://aistudio.google.com/).\n\n"
+                    f"*Dettaglio: `{error_msg[:200]}`*"
                 )
             elif "invalid" in error_msg.lower() or "401" in error_msg:
                 full_response = (
                     "🔐 **API Key non valida**\n\n"
                     "La chiave inserita non è riconosciuta. Verifica di aver copiato "
                     "correttamente la tua Google API Key dalla "
-                    "[console Google AI](https://aistudio.google.com/apikey)."
+                    "[console Google AI](https://aistudio.google.com/apikey).\n\n"
+                    f"*Dettaglio: `{error_msg[:200]}`*"
                 )
             elif "safety" in error_msg.lower():
                 full_response = (
                     "🛡️ **Filtro di sicurezza attivato**\n\n"
                     "La risposta è stata bloccata dai filtri di sicurezza di Google. "
-                    "Prova a riformulare la tua domanda."
+                    "Prova a riformulare la tua domanda.\n\n"
+                    f"*Dettaglio: `{error_msg[:200]}`*"
                 )
             else:
                 full_response = (
                     "❌ **Errore di comunicazione**\n\n"
                     "Non sono riuscito a contattare il servizio AI. "
                     "Verifica la tua connessione internet e riprova.\n\n"
-                    f"*Dettaglio tecnico: `{error_msg[:120]}`*"
+                    f"*Dettaglio tecnico: `{error_msg[:200]}`*"
                 )
 
             message_placeholder.markdown(full_response)
