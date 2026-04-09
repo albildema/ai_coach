@@ -642,7 +642,7 @@ with st.sidebar:
                 genai.configure(api_key=api_key)
                 st.session_state._last_api_key = api_key
                 st.session_state.model = genai.GenerativeModel(
-                    "gemini-2.0-flash",
+                    "gemini-2.5-flash",
                     system_instruction=get_system_prompt(st.session_state.sport),
                 )
                 st.session_state.chat_session = st.session_state.model.start_chat(history=[])
@@ -690,7 +690,7 @@ with st.sidebar:
 
                 genai.configure(api_key=api_key)
                 st.session_state.model = genai.GenerativeModel(
-                    "gemini-2.0-flash",
+                    "gemini-2.5-flash",
                     system_instruction=get_system_prompt(sport),
                 )
                 st.session_state.chat_session = st.session_state.model.start_chat(history=[])
