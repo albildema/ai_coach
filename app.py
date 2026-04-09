@@ -175,13 +175,11 @@ DARK_CSS = """
         background-color: var(--bg-primary) !important;
     }
 
-    /* Gradient border on the floating chat container */
+    /* Remove all borders from the floating chat container */
     [data-testid="stBottom"] > div > div > div {
-        border: 2px solid transparent !important;
-        border-image: linear-gradient(135deg, #00E5CC, #007AFF) 1 !important;
-        border-radius: 16px !important;
+        border: none !important;
         background: var(--bg-primary) !important;
-        padding: 8px !important;
+        padding: 0 !important;
     }
 
     [data-testid="stChatInput"] {
@@ -190,8 +188,7 @@ DARK_CSS = """
 
     [data-testid="stChatInput"] textarea {
         background: var(--bg-card) !important;
-        border: 2px solid transparent !important;
-        border-image: linear-gradient(135deg, #00E5CC, #007AFF) 1 !important;
+        border: 1px solid var(--border) !important;
         border-radius: var(--radius) !important;
         color: var(--text-primary) !important;
         font-family: 'Inter', sans-serif !important;
@@ -200,9 +197,8 @@ DARK_CSS = """
     }
 
     [data-testid="stChatInput"] textarea:focus {
-        border: 2px solid transparent !important;
-        border-image: linear-gradient(135deg, #00E5CC, #007AFF) 1 !important;
-        box-shadow: 0 0 12px rgba(0, 229, 204, 0.25), 0 0 4px rgba(0, 122, 255, 0.2) !important;
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 2px var(--accent-glow) !important;
     }
 
     [data-testid="stChatInput"] button {
