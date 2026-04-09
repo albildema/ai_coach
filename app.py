@@ -432,6 +432,35 @@ DARK_CSS = """
 
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
+# Force sidebar open via JavaScript
+SIDEBAR_JS = """
+<script>
+    // Force sidebar open on every page load
+    function openSidebar() {
+        // Try clicking the collapsed control button
+        const btn = document.querySelector('[data-testid="collapsedControl"]');
+        if (btn) {
+            btn.click();
+            return;
+        }
+        // Also try the basebutton variant
+        const btn2 = document.querySelector('[data-testid="stSidebarCollapsedControl"]');
+        if (btn2) {
+            btn2.click();
+            return;
+        }
+        // If sidebar is not found yet, retry
+        const sidebar = document.querySelector('[data-testid="stSidebar"]');
+        if (!sidebar || sidebar.getAttribute('aria-expanded') === 'false') {
+            setTimeout(openSidebar, 200);
+        }
+    }
+    // Run after page loads
+    setTimeout(openSidebar, 500);
+</script>
+"""
+st.markdown(SIDEBAR_JS, unsafe_allow_html=True)
+
 
 # ──────────────────────────────────────────────────────────────
 # SYSTEM PROMPT — Digital Twin Filosofia Completa
