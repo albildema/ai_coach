@@ -63,7 +63,7 @@ Universalità Endurance: Chiedi all'utente se il suo focus è Triathlon, Corsa o
     """
 
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
+        model_name="gemini-3-flash",
         system_instruction=system_prompt
     )
 
