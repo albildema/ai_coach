@@ -161,6 +161,8 @@ DARK_CSS = """
     .block-container,
     div[data-testid="stBottom"] > div,
     div[data-testid="stBottom"] > div > div,
+    div[data-testid="stBottom"] > div > div > div,
+    div[data-testid="stBottom"] > div > div > div > div,
     section[data-testid="stBottom"],
     footer,
     .appview-container > section,
@@ -173,8 +175,17 @@ DARK_CSS = """
         background-color: var(--bg-primary) !important;
     }
 
+    /* Gradient border on the floating chat container */
+    [data-testid="stBottom"] > div > div > div {
+        border: 2px solid transparent !important;
+        border-image: linear-gradient(135deg, #00E5CC, #007AFF) 1 !important;
+        border-radius: 16px !important;
+        background: var(--bg-primary) !important;
+        padding: 8px !important;
+    }
+
     [data-testid="stChatInput"] {
-        border-top: 1px solid var(--border) !important;
+        border: none !important;
     }
 
     [data-testid="stChatInput"] textarea {
