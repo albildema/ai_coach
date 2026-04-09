@@ -202,12 +202,33 @@ DARK_CSS = """
     /* Remove all borders from the floating chat container */
     [data-testid="stBottom"] > div > div > div {
         border: none !important;
-        background: var(--bg-primary) !important;
-        padding: 0 !important;
+        background: linear-gradient(135deg, #00E5CC, #007AFF) !important;
+        border-radius: 20px !important;
+        padding: 3px !important;
     }
 
     [data-testid="stChatInput"] {
         border: none !important;
+        background: var(--bg-primary) !important;
+        border-radius: 18px !important;
+    }
+
+    /* Override ANY white background in bottom area */
+    [data-testid="stBottom"] * {
+        background-color: transparent !important;
+    }
+
+    [data-testid="stBottom"] {
+        background: var(--bg-primary) !important;
+    }
+
+    [data-testid="stBottom"] > div,
+    [data-testid="stBottom"] > div > div {
+        background: var(--bg-primary) !important;
+    }
+
+    [data-testid="stBottom"] > div > div > div {
+        background: linear-gradient(135deg, #00E5CC, #007AFF) !important;
     }
 
     [data-testid="stChatInput"] textarea {
