@@ -4,7 +4,7 @@ import google.generativeai as genai
 st.set_page_config(page_title="Elite Endurance AI Coach", page_icon="🏃‍♂️")
 st.title("🏃‍♂️ Elite Endurance AI Coach")
 
-api_key = st.sidebar.text_input("AIzaSyC-bPpLWPariCgNpCqUYiR0PBLuhH_3FhY", type="password")
+api_key = st.sidebar.text_input("Inserisci la tua API Key di Google", type="password")
 
 if api_key:
     genai.configure(api_key=api_key)
@@ -88,4 +88,4 @@ Universalità Endurance: Chiedi all'utente se il suo focus è Triathlon, Corsa o
             st.markdown(response.text)
             st.session_state.messages.append({"role": "assistant", "content": response.text})
 else:
-    st.info("AIzaSyC-bPpLWPariCgNpCqUYiR0PBLuhH_3FhY")
+    st.info("Incolla la tua API Key a sinistra per iniziare.")
