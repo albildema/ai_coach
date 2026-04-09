@@ -72,27 +72,36 @@ DARK_CSS = """
     [data-testid="stToolbar"] { display: none !important; }
 
     /* ── Sidebar toggle button (collapse/expand arrow) ── */
-    [data-testid="stSidebar"] button[kind="header"],
-    [data-testid="collapsedControl"],
-    [data-testid="stSidebarCollapsedControl"],
-    button[data-testid="stSidebarCollapsedControl"],
-    .stSidebar button,
-    [data-testid="stSidebar"] [data-testid="stBaseButton-header"],
-    [data-testid="collapsedControl"] > div,
+    [data-testid="collapsedControl"] {
+        position: fixed !important;
+        top: 12px !important;
+        left: 12px !important;
+        z-index: 9999999 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: var(--bg-secondary) !important;
+        border: 1px solid var(--accent) !important;
+        border-radius: 10px !important;
+        padding: 6px !important;
+        cursor: pointer !important;
+        width: auto !important;
+        height: auto !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+    }
+
     [data-testid="collapsedControl"] svg {
         color: var(--accent) !important;
         fill: var(--accent) !important;
-        background: var(--bg-secondary) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 8px !important;
-        opacity: 1 !important;
-        visibility: visible !important;
+        width: 20px !important;
+        height: 20px !important;
     }
 
-    [data-testid="collapsedControl"] {
-        background: var(--bg-secondary) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 8px !important;
+    [data-testid="collapsedControl"] * {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: flex !important;
     }
 
     /* ── Sidebar ── */
@@ -109,8 +118,7 @@ DARK_CSS = """
         color: var(--text-primary) !important;
     }
 
-    [data-testid="stSidebar"] .stSelectbox > div > div,
-    [data-testid="stSidebar"] .stTextInput > div > div > input {
+    [data-testid="stSidebar"] .stSelectbox > div > div {
         background: var(--bg-card) !important;
         border: 1px solid var(--border) !important;
         border-radius: var(--radius-sm) !important;
@@ -118,9 +126,25 @@ DARK_CSS = """
         font-family: 'Inter', sans-serif !important;
     }
 
+    /* API key input — gradient border wrapper */
+    [data-testid="stSidebar"] .stTextInput > div > div {
+        background: linear-gradient(135deg, #00E5CC, #007AFF) !important;
+        border-radius: 12px !important;
+        padding: 2px !important;
+        border: none !important;
+    }
+
+    [data-testid="stSidebar"] .stTextInput > div > div > input {
+        background: var(--bg-card) !important;
+        border: none !important;
+        border-radius: 10px !important;
+        color: var(--text-primary) !important;
+        font-family: 'Inter', sans-serif !important;
+    }
+
     [data-testid="stSidebar"] .stTextInput > div > div > input:focus {
-        border-color: var(--accent) !important;
-        box-shadow: 0 0 0 2px var(--accent-glow) !important;
+        border: none !important;
+        box-shadow: none !important;
     }
 
     /* ── Chat Messages ── */
@@ -260,6 +284,18 @@ DARK_CSS = """
     /* ── Force dark on content elements (but NOT sidebar controls) ── */
     .element-container, .stMarkdown {
         background-color: transparent !important;
+    }
+
+    /* ── Hide iframe borders/outlines (from components.html) ── */
+    iframe {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    .stHtml {
+        border: none !important;
+        outline: none !important;
     }
 
     /* Sidebar toggle: high-specificity override to stay visible */
