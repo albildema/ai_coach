@@ -432,34 +432,44 @@ DARK_CSS = """
 
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
-# Force sidebar open via JavaScript
-SIDEBAR_JS = """
-<script>
-    // Force sidebar open on every page load
-    function openSidebar() {
-        // Try clicking the collapsed control button
-        const btn = document.querySelector('[data-testid="collapsedControl"]');
-        if (btn) {
-            btn.click();
-            return;
+# Force sidebar open via components.html (actually executes JS on Cloud)
+import streamlit.components.v1 as components
+
+components.html(
+    """
+    <script>
+        // Access parent document (Streamlit app)
+        const doc = window.parent.document;
+
+        // Clear any stored sidebar state
+        try {
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.includes('sidebar')) {
+                    localStorage.removeItem(key);
+                }
+            }
+        } catch(e) {}
+
+        // Find and click the sidebar toggle if collapsed
+        function openSidebar() {
+            const btn = doc.querySelector('[data-testid="collapsedControl"]');
+            if (btn) {
+                btn.click();
+                return;
+            }
+            const sidebar = doc.querySelector('[data-testid="stSidebar"]');
+            if (sidebar && sidebar.getAttribute('aria-expanded') === 'false') {
+                const toggle = sidebar.querySelector('button');
+                if (toggle) toggle.click();
+            }
         }
-        // Also try the basebutton variant
-        const btn2 = document.querySelector('[data-testid="stSidebarCollapsedControl"]');
-        if (btn2) {
-            btn2.click();
-            return;
-        }
-        // If sidebar is not found yet, retry
-        const sidebar = document.querySelector('[data-testid="stSidebar"]');
-        if (!sidebar || sidebar.getAttribute('aria-expanded') === 'false') {
-            setTimeout(openSidebar, 200);
-        }
-    }
-    // Run after page loads
-    setTimeout(openSidebar, 500);
-</script>
-"""
-st.markdown(SIDEBAR_JS, unsafe_allow_html=True)
+        setTimeout(openSidebar, 300);
+        setTimeout(openSidebar, 800);
+    </script>
+    """,
+    height=0,
+)
 
 
 # ──────────────────────────────────────────────────────────────
