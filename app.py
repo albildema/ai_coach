@@ -561,9 +561,11 @@ with st.sidebar:
 
             genai.configure(api_key=api_key)
             st.session_state.model = genai.GenerativeModel(
-                "gemini-2.0-flash",
+                "gemini-1.5-flash",
                 system_instruction=get_system_prompt(st.session_state.sport),
             )
+            if "chat_session" not in st.session_state:
+                st.session_state.chat_session = st.session_state.model.start_chat(history=[])
             st.session_state.api_key_set = True
             st.markdown(
                 '<div class="info-box"><span class="status-dot"></span> API connessa con successo</div>',
@@ -607,9 +609,10 @@ with st.sidebar:
 
                 genai.configure(api_key=api_key)
                 st.session_state.model = genai.GenerativeModel(
-                    "gemini-2.0-flash",
+                    "gemini-1.5-flash",
                     system_instruction=get_system_prompt(sport),
                 )
+                st.session_state.chat_session = st.session_state.model.start_chat(history=[])
             except Exception:
                 pass
 
@@ -767,13 +770,7 @@ if prompt := st.chat_input(
 
         try:
             # Build conversation history for context
-            history = []
-            for msg in st.session_state.messages[:-1]:  # exclude current user msg
-                role = "user" if msg["role"] == "user" else "model"
-                history.append({"role": role, "parts": [msg["content"]]})
-
-            # Create chat with history
-            chat = st.session_state.model.start_chat(history=history)
+            chat = st.session_state.chat_session
 
             # Check if this is the first user message (trigger onboarding)
             is_first_message = len([m for m in st.session_state.messages if m["role"] == "user"]) == 1
