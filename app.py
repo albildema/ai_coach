@@ -71,6 +71,30 @@ DARK_CSS = """
 
     [data-testid="stToolbar"] { display: none !important; }
 
+    /* ── Sidebar toggle button (collapse/expand arrow) ── */
+    [data-testid="stSidebar"] button[kind="header"],
+    [data-testid="collapsedControl"],
+    [data-testid="stSidebarCollapsedControl"],
+    button[data-testid="stSidebarCollapsedControl"],
+    .stSidebar button,
+    [data-testid="stSidebar"] [data-testid="stBaseButton-header"],
+    [data-testid="collapsedControl"] > div,
+    [data-testid="collapsedControl"] svg {
+        color: var(--accent) !important;
+        fill: var(--accent) !important;
+        background: var(--bg-secondary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    [data-testid="collapsedControl"] {
+        background: var(--bg-secondary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+    }
+
     /* ── Sidebar ── */
     [data-testid="stSidebar"] {
         background: var(--bg-secondary) !important;
