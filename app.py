@@ -150,9 +150,30 @@ DARK_CSS = """
         padding: 1rem !important;
     }
 
-    /* ── Chat Input ── */
+    /* ── Chat Input & Bottom Area ── */
+    [data-testid="stChatInput"],
+    [data-testid="stBottom"],
+    [data-testid="stBottomBlockContainer"],
+    [data-testid="stChatFloatingInputContainer"],
+    .stChatFloatingInputContainer,
+    [class*="stBottom"],
+    [class*="bottom-container"],
+    .block-container,
+    div[data-testid="stBottom"] > div,
+    div[data-testid="stBottom"] > div > div,
+    section[data-testid="stBottom"],
+    footer,
+    .appview-container > section,
+    .stApp > div,
+    .stApp > div > div,
+    .main > div,
+    .main > div > div,
+    .main > div > div > div {
+        background: var(--bg-primary) !important;
+        background-color: var(--bg-primary) !important;
+    }
+
     [data-testid="stChatInput"] {
-        background: var(--bg-secondary) !important;
         border-top: 1px solid var(--border) !important;
     }
 
@@ -180,6 +201,25 @@ DARK_CSS = """
 
     [data-testid="stChatInput"] button:hover {
         opacity: 0.85 !important;
+    }
+
+    /* ── Nuclear: force ALL remaining elements dark ── */
+    iframe, .stException, .stAlert,
+    .element-container, .stMarkdown,
+    div[data-testid] {
+        background-color: transparent !important;
+    }
+
+    /* Explicit override for white bottom gap */
+    .main .block-container {
+        background: var(--bg-primary) !important;
+        padding-bottom: 80px !important;
+    }
+
+    [data-testid="stAppViewContainer"] > div:last-child,
+    [data-testid="stAppViewContainer"] > section {
+        background: var(--bg-primary) !important;
+        background-color: var(--bg-primary) !important;
     }
 
     /* ── Buttons ── */
