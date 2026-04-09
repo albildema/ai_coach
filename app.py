@@ -734,23 +734,19 @@ with st.sidebar:
     st.markdown("---")
 
     # ── API Key ──
-    st.markdown(
-        '<p style="font-size:0.8rem; font-weight:600; color:#8888A0; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;">🔑 Google API Key</p>',
-        unsafe_allow_html=True,
-    )
-    api_key = st.text_input(
-        "API Key",
-        type="password",
-        placeholder="Inserisci la tua Google API Key...",
-        label_visibility="collapsed",
-        key="api_key_input",
-    )
+    # Try secrets first, then fallback to manual input
+    secret_key = None
+    try:
+        secret_key = st.secrets.get("GOOGLE_API_KEY", None)
+    except Exception:
+        pass
 
-    if api_key:
+    if secret_key:
+        # Auto-configure from secrets
+        api_key = secret_key
         try:
             import google.generativeai as genai
 
-            # Only reconfigure if key changed
             if st.session_state.get("_last_api_key") != api_key:
                 genai.configure(api_key=api_key)
                 st.session_state._last_api_key = api_key
@@ -762,7 +758,7 @@ with st.sidebar:
 
             st.session_state.api_key_set = True
             st.markdown(
-                '<div class="info-box"><span class="status-dot"></span> API connessa con successo</div>',
+                '<div class="info-box"><span class="status-dot"></span> API configurata automaticamente</div>',
                 unsafe_allow_html=True,
             )
         except Exception as e:
@@ -772,10 +768,48 @@ with st.sidebar:
                 unsafe_allow_html=True,
             )
     else:
+        # Manual input fallback
         st.markdown(
-            '<div class="info-box">Inserisci la tua Google API Key per iniziare.<br><a href="https://aistudio.google.com/apikey" target="_blank" style="color:#00E5CC;">Ottieni una chiave gratuita →</a></div>',
+            '<p style="font-size:0.8rem; font-weight:600; color:#8888A0; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;">🔑 Google API Key</p>',
             unsafe_allow_html=True,
         )
+        api_key = st.text_input(
+            "API Key",
+            type="password",
+            placeholder="Inserisci la tua Google API Key...",
+            label_visibility="collapsed",
+            key="api_key_input",
+        )
+
+        if api_key:
+            try:
+                import google.generativeai as genai
+
+                if st.session_state.get("_last_api_key") != api_key:
+                    genai.configure(api_key=api_key)
+                    st.session_state._last_api_key = api_key
+                    st.session_state.model = genai.GenerativeModel(
+                        "gemini-2.5-flash",
+                        system_instruction=get_system_prompt(st.session_state.sport),
+                    )
+                    st.session_state.chat_session = st.session_state.model.start_chat(history=[])
+
+                st.session_state.api_key_set = True
+                st.markdown(
+                    '<div class="info-box"><span class="status-dot"></span> API connessa con successo</div>',
+                    unsafe_allow_html=True,
+                )
+            except Exception as e:
+                st.session_state.api_key_set = False
+                st.markdown(
+                    f'<div class="warning-box">⚠️ Errore API: {str(e)[:80]}</div>',
+                    unsafe_allow_html=True,
+                )
+        else:
+            st.markdown(
+                '<div class="info-box">Inserisci la tua Google API Key per iniziare.<br><a href="https://aistudio.google.com/apikey" target="_blank" style="color:#00E5CC;">Ottieni una chiave gratuita →</a></div>',
+                unsafe_allow_html=True,
+            )
 
     st.markdown("---")
 
